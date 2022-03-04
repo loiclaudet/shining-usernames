@@ -41,13 +41,23 @@ k000000000000000000000000000000000000000000000000000000000000Oxc''lxlcccccccccll
 000000000000000000000000000000000000000000000000000000000000000000xc;lxdodoollll
 **/
 
-shine();
+document.addEventListener('load', shine);
+
+let previousUrl = '';
+const observer = new MutationObserver(function(mutations) {
+  if (location.href !== previousUrl) {
+    previousUrl = location.href;
+    shine();
+  }
+});
+const option = {subtree: true, childList: true}
+observer.observe(document, option);
 
 function shine() {
-    const re = new RegExp("(color=)?(#(?:[0-9a-fA-F]{3}){1,2})", "g");
-    return Array.from(document.querySelectorAll('h2,h4'))
-        .filter(e => e.innerHTML.match(re))
-        .forEach(node => node.innerHTML = shiningNameToHtmlString(node.innerText)); 
+  const re = new RegExp("(color=)?(#(?:[0-9a-fA-F]{3}){1,2})", "g");
+  return Array.from(document.querySelectorAll('h2,h4'))
+      .filter(e => e.innerHTML.match(re))
+      .forEach(node => node.innerHTML = shiningNameToHtmlString(node.innerText)); 
 }
 
 function shiningNameToHtmlString(name) {
