@@ -1,0 +1,29 @@
+{
+    "name": "Shining colored name",
+    "version": "0.1.0",
+    "manifest_version": 2,
+    "description": "Provide shining colored name on the Axie Infinity marketplace.",
+    "content_scripts": [
+        {
+            "js": ["inject.js"],
+            "matches": ["*://marketplace.axieinfinity.com/*"],
+            "run_at": "document_start"
+        }
+    ],
+    "permissions": ["*://marketplace.axieinfinity.com/*"],
+    "page_action": {
+        "default_icon": {
+            "16": "icons/shining16.png",
+            "32": "icons/shining32.png",
+            "48": "icons/shining48.png",
+            "128": "icons/shining128.png"
+        },
+        "default_title": "👊 Hustle 👊"
+    },
+    "icons": {
+        "16": "icons/shining16.png",
+        "32": "icons/shining32.png",
+        "48": "icons/shining48.png",
+        "128": "icons/shining128.png"
+    }
+}
