@@ -7,7 +7,7 @@
         {
             "js": ["inject.js"],
             "matches": ["https://marketplace.axieinfinity.com/*"],
-            "run_at": "document_start"
+            "run_at": "document_idle"
         }
     ],
     "host_permissions": ["https://marketplace.axieinfinity.com/*"],

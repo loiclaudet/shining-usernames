@@ -41,23 +41,23 @@ k000000000000000000000000000000000000000000000000000000000000Oxc''lxlcccccccccll
 000000000000000000000000000000000000000000000000000000000000000000xc;lxdodoollll
 **/
 
-document.addEventListener('load', shine);
-
-let previousUrl = '';
-const observer = new MutationObserver(function(mutations) {
-  if (location.href !== previousUrl) {
-    previousUrl = location.href;
-    shine();
-  }
-});
-const option = {subtree: true, childList: true}
-observer.observe(document, option);
+const observer = new MutationObserver(throttle(shine, 1000));
+observer.observe(document, { subtree: true, childList: true });
 
 function shine() {
-  const re = new RegExp("(color=)?(#(?:[0-9a-fA-F]{3}){1,2})", "g");
-  return Array.from(document.querySelectorAll('h2,h4'))
-      .filter(e => e.innerHTML.match(re))
-      .forEach(node => node.innerHTML = shiningNameToHtmlString(node.innerText)); 
+  const re = new RegExp("<(color=)?(#(?:[0-9a-fA-F]{3}){1,2})", "g");
+  // target headers tags and users blue ronin links
+  Array.from(
+    document.querySelectorAll(
+      'h2, h3, h4, h5, a[class^="text-primary-4"][href^="/profile/ronin:"]'
+    )
+  )
+    // keep only headers styled with color tag
+    .filter((e) => e.innerText.match(re))
+    // replace the header content with the styled HTML
+    .forEach(
+      (node) => (node.innerHTML = shiningNameToHtmlString(node.innerText))
+    );
 }
 
 function shiningNameToHtmlString(name) {
@@ -78,4 +78,20 @@ function shiningNameToHtmlString(name) {
       .concat(enclosingSpan.repeat(count)) +
     "</span>"
   );
+}
+
+function throttle(callback, limit) {
+  var wait = false; // Initially, we're not waiting
+  return function () {
+    // We return a throttled function
+    if (!wait) {
+      // If we're not waiting
+      callback.call(); // Execute users function
+      wait = true; // Prevent future invocations
+      setTimeout(function () {
+        // After a period of time
+        wait = false; // And allow future invocations
+      }, limit);
+    }
+  };
 }
