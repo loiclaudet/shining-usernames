@@ -40,24 +40,53 @@ k000000000000000000000000000000000000000000000000000000000000Oxc''lxlcccccccccll
 0000000000000000000000000000000000000000000000000000000000000000000x:;oxdddolooo
 000000000000000000000000000000000000000000000000000000000000000000xc;lxdodoollll
 **/
+let observer = null;
 
-const observer = new MutationObserver(throttle(shine, 1000));
-observer.observe(document, { subtree: true, childList: true });
+chrome.storage.local.get("fanciness", ({ fanciness }) => {
+  observe(fanciness);
+});
 
-function shine() {
+chrome.runtime.onMessage.addListener(({ fanciness }) => {
+  if (observer instanceof MutationObserver) {
+    observer.disconnect();
+  }
+  observe(fanciness);
+});
+
+function observe(fanciness) {
+  observer = new MutationObserver(throttle(1000, shine, [fanciness]));
+  observer.observe(document, { subtree: true, childList: true });
+}
+
+function shine(fanciness) {
   const re = new RegExp("<(color=)?(#(?:[0-9a-fA-F]{3}){1,2})", "g");
   // target headers tags and users blue ronin links
   Array.from(
     document.querySelectorAll(
-      'h2, h3, h4, h5, a[class^="text-primary-4"][href^="/profile/ronin:"]'
+      'h2, h3, h4, h5, a[class^="text-primary-4"][href^="/profile/ronin:"] span'
     )
   )
     // keep only headers styled with color tag
     .filter((e) => e.innerText.match(re))
     // replace the header content with the styled HTML
     .forEach(
-      (node) => (node.innerHTML = shiningNameToHtmlString(node.innerText))
+      (node) =>
+        (node.innerHTML = fanciness
+          ? shiningNameToHtmlString(node.innerText)
+          : removeUnityTags(node.innerText))
     );
+}
+
+function removeUnityTags(name) {
+  return (
+    name
+      // remove color tags
+      .replace(/<(color=)?(#(?:[0-9a-fA-F]{3}){1,2})>/g, "")
+      // remove size tags
+      .replace(/<(size=)?\d+>/g, "")
+      // remove enclosing tags
+      .replace(/<\/(color|size)?>/g, "")
+  );
 }
 
 function shiningNameToHtmlString(name) {
@@ -80,13 +109,13 @@ function shiningNameToHtmlString(name) {
   );
 }
 
-function throttle(callback, limit) {
-  var wait = false; // Initially, we're not waiting
+function throttle(limit, callback, args) {
+  let wait = false; // Initially, we're not waiting
   return function () {
     // We return a throttled function
     if (!wait) {
       // If we're not waiting
-      callback.call(); // Execute users function
+      callback.apply(null, args); // Execute users function
       wait = true; // Prevent future invocations
       setTimeout(function () {
         // After a period of time
