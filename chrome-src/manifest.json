@@ -1,8 +1,8 @@
 {
-    "name": "Shining colored name",
+    "name": "Shining usernames",
     "version": "1.0.0",
     "manifest_version": 3,
-    "description": "Provide shining colored name on the Axie Infinity marketplace.",
+    "description": "Provide shining usernames on the Axie Infinity marketplace.",
     "content_scripts": [
         {
             "js": [
