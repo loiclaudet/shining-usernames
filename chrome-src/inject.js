@@ -91,14 +91,14 @@ function removeUnityTags(name) {
 
 function shiningNameToHtmlString(name) {
   const enclosingSpan = "</span>";
-  const re = new RegExp("(color=)?(#(?:[0-9a-fA-F]{3}){1,2})", "g");
+  const re = new RegExp("<(color=)?(#(?:[0-9a-fA-F]{3}){1,2})>", "g");
   const count = (name.match(re) || []).length;
 
   return (
     "<span>" +
     name
       // replace hex tags with styled span tags
-      .replace(re, `span style=color:${"$2"};`)
+      .replace(re, `<span style='color:${"$2"};'>`)
       // remove size tags
       .replace(/<(size=)?\d+>/g, "")
       // remove enclosing tags
