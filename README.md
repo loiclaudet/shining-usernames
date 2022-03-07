@@ -1,5 +1,6 @@
-# Shining usernames <img width="30" alt="image" src="https://user-images.githubusercontent.com/8344874/156878148-3766454a-00e8-4ebc-acc4-128cb3ad761c.png">
+# <img width="30" alt="image" src="https://user-images.githubusercontent.com/8344874/157022661-688ccc98-118e-4c6d-a010-684023531724.png"> Shining usernames <img width="30" alt="image" src="https://user-images.githubusercontent.com/8344874/157022661-688ccc98-118e-4c6d-a010-684023531724.png">
 Remove dirty color tags like `<color=#ff0>` from the Axie Infinity marketplace and display shining usernames instead.
+
 
 ## Exemples
 
