@@ -67,6 +67,24 @@ function shine(fanciness) {
     )
   )
     .map((node) => {
+      const isNodeSiblingToEditButton =
+        node.nextElementSibling?.firstChild?.firstChild
+          ?.getAttribute("d")
+          // target using svg path
+          ?.startsWith("M11.183");
+
+      // if username close to edit button
+      if (isNodeSiblingToEditButton) {
+        const parent = node.parentElement;
+
+        if (parent) {
+          // display this button below to prevent accessiblity issue with potential long name.
+          parent.style.flexDirection = "column";
+          // display it completely
+          parent.classList.remove("truncate");
+        }
+      }
+
       // display name without dots
       node.classList.remove("truncate");
       // display name above users addresses blocks on ronin profile page
