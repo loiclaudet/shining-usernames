@@ -54,7 +54,7 @@ chrome.runtime.onMessage.addListener(({ fanciness }) => {
 });
 
 function observe(fanciness) {
-  observer = new MutationObserver(throttle(1000, shine, [fanciness]));
+  observer = new MutationObserver(throttle(500, shine, [fanciness]));
   observer.observe(document, { subtree: true, childList: true });
 }
 
@@ -66,8 +66,15 @@ function shine(fanciness) {
       'h2, h3, h4, h5, a[class^="text-primary-4"][href^="/profile/ronin:"] span'
     )
   )
+    .map((node) => {
+      // display name without dots
+      node.classList.remove("truncate");
+      // display name above users addresses blocks on ronin profile page
+      node.style.cssText += "position:relative;";
+      return node;
+    })
     // keep only headers styled with color tag
-    .filter((e) => e.innerText.match(re))
+    .filter((node) => node.innerText.match(re))
     // replace the header content with the styled HTML
     .forEach(
       (node) =>

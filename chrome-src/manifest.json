@@ -1,6 +1,6 @@
 {
     "name": "Shining Usernames",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "manifest_version": 3,
     "description": "Provide shining usernames on the Axie Infinity marketplace.",
     "content_scripts": [
